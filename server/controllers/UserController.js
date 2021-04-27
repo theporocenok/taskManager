@@ -8,11 +8,7 @@ let errHandler = (e) => {
 }
 
 export async function login(req, res, next) {
-  let user = await User.findOne({
-    where: {
-      login: req.body.login,
-    }
-  });
+  let user = await User.findUser(req.body);
 
   if (!!!user) {
     res.status(403).json({
@@ -36,7 +32,7 @@ export async function login(req, res, next) {
   }, process.env.SECRET_key);
 
   res
-    .cookie('jwt', token, { maxAge: 900000, httpOnly: true })
+    .cookie('jwt', token, { maxAge: 1000 * 60 * 60 * 24, httpOnly: true })
     .status(200)
     .json({
       message: user,
@@ -48,18 +44,34 @@ export async function login(req, res, next) {
 
 export async function register(req, res, next) {
   let user = await User.create({
-    name: req.body.name ?? '',
-    surname: req.body.surname ?? '',
-    secondName: req.body.secondName ?? '',
+    name: req.body.name,
+    surname: req.body.surname,
+    secondName: req.body.secondName,
     login: req.body.login,
     password: req.body.password,
-    leaderId: req.body.leaderId ?? '',
+    leaderId: req.body.leaderId,
   })
     .catch(errHandler);
+
+  let token = jwt.sign({
+    login: user.login,
+    createdAt: user.createdAt,
+  }, process.env.SECRET_key);
+  res
+    .cookie('jwt', token, { maxAge: 1000 * 60 * 60 * 24, httpOnly: true })
+    .status(200)
+    .json({
+      message: user,
+    });
+  next();
+}
+
+export async function getSubordinatesList(req, res, next) {
+  let subordinatesList = await res.locals.user.getSubordinates(['id', 'name']);
   res.status(200).json({
-    message: user,
+    subordinates: subordinatesList
   });
   next();
 }
 
-export default {login, register};
+export default {login, register, getSubordinatesList};
