@@ -3,32 +3,17 @@ import jwt from 'jsonwebtoken';
 
 let User = Associations.User;
 
-export default (req, res, next) => {
-  if (!!!req.cookies.jwt) {
-    wrongToken(res, { message: 'Empty token' });
-    return;
-  }
-
-  let token = req.cookies.jwt;
-  jwt.verify(token, process.env.SECRET_key, async (err, decoded) => {
-    if (err) {
-      console.error('Verify jwt token error: ', err);
-      wrongToken(res, err);
-      return;
-    }
-
-    let authUser = await User.findOne({
-      where: {
-        login: decoded.login,
-        createdAt: decoded.createdAt,
-      }
-    });
-    if (!!!authUser) {
-      wrongToken(res, { message: 'Пользователя с такими данными не существует' });
-      return;
-    }
+export default async (req, res, next) => {
+  try {
+    let token = req.cookies.jwt;
+    let decoded = jwt.verify(token, process.env.SECRET_key);
+    let authUser = await User.findUser(decoded);
+    res.locals.user = authUser;
     next();
-  });
+  }catch(e) {
+    wrongToken(res, { message: 'Wrong token' });
+    next(e);
+  }
 }
 
 function wrongToken(res, err) {
