@@ -50,15 +50,38 @@ const setSaltAndPassword = user => {
 
 User.beforeCreate(setSaltAndPassword);
 User.beforeUpdate(setSaltAndPassword);
+User.findUser = function(findingUser) {
+  return User.findOne({
+    where: {
+      login: findingUser.login,
+    }
+  })
+}
+User.prototype.getSubordinates = async function(attrs = ['id'], params = {},) {
+  return await User.findAll({
+    attributes: attrs,
+    where: {
+      [Sequelize.Op.or]: {
+        leaderId: this.id,
+        id: this.id,
+      }
+    },
+  });
+}
+User.prototype.getAllTasks = async function() {
+  return [].concat(
+    (await this.getTasks()).map(task => task.dataValues),
+    (await this.getSubordinatesTasks()).map(task => task.dataValues)
+  );
 
+}
 User.prototype.correctPassword = function(enteredPassword) {
-  return encryptPassword(enteredPassword, this.salt()) === this.password()
+  return encryptPassword(enteredPassword, this.salt()) === this.password();
 }
 
 function generateSalt() {
   return crypto.randomBytes(16).toString('base64')
 }
-
 function encryptPassword(plainText, salt) {
   return crypto
     .createHash('RSA-SHA256')
