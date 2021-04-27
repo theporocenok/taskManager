@@ -1,4 +1,5 @@
 import Sequelize from 'sequelize';
+import moment from 'moment';
 
 export default class Task extends Sequelize.Model {};
 Task.init( {
@@ -28,3 +29,21 @@ Task.init( {
   sequelize,
   modelName: 'task',
 });
+
+Task.getAllByUserIds = async function (ids = [], filters = {}) {
+  return await Task.findAll({
+    where: {
+      creatorId: ids,
+      expirationDate: !!filters.dateFrom
+        ? {[Sequelize.Op.gt]: new Date(filters.dateFrom)}
+        : {[Sequelize.Op.ne]: 'undefined'},
+      [Sequelize.Op.and]: {
+        expirationDate: !!filters.dateTo
+          ? {[Sequelize.Op.lt]: new Date(filters.dateTo)}
+          : {[Sequelize.Op.ne]: 'undefined'},
+      }
+    },
+    order: [['updatedAt', 'DESC']],
+    group: !!filters.groupBy ? filters.groupBy : undefined,
+  })
+}
