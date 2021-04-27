@@ -1,4 +1,3 @@
-// import User from './../models/User.js'
 import Associations from './../models/Associations.js';
 import jwt from 'jsonwebtoken';
 
@@ -33,12 +32,16 @@ export async function login(req, res, next) {
 
   let token = jwt.sign({
     login: user.login,
-    password: user.password,
+    createdAt: user.createdAt,
   }, process.env.SECRET_key);
-  res.status(200).json({
-    message: user,
-    token: token,
-  });
+
+  res
+    .cookie('jwt', token, { maxAge: 900000, httpOnly: true })
+    .status(200)
+    .json({
+      message: user,
+      token: token,
+    });
 
   next();
 }
