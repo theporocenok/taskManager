@@ -5,10 +5,9 @@ let User = Associations.User;
 
 export default async (req, res, next) => {
   try {
-    let token = req.cookies.jwt;
+    let token = req.headers['authorization'];
     let decoded = jwt.verify(token, process.env.SECRET_key);
-    let authUser = await User.findUser(decoded);
-    res.locals.user = authUser;
+    res.locals.user = await User.findUser(decoded);
     next();
   }catch(e) {
     wrongToken(res, { message: 'Wrong token' });
