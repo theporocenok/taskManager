@@ -17,6 +17,6 @@ app.use(cookieParser());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', AuthMiddleware, userRoutes);
-app.use('/api/task', AuthMiddleware, taskRoutes);
+app.use('/api/tasks', AuthMiddleware, taskRoutes);
 
 export default app;
