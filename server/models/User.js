@@ -13,6 +13,30 @@ User.init({
   name: Sequelize.STRING,
   surname: Sequelize.STRING,
   secondName: Sequelize.STRING,
+  fio: {
+    type: Sequelize.VIRTUAL(Sequelize.TEXT, ['name', 'surname', 'secondName']),
+    get() {
+      let surname = typeof this.getDataValue('surname') != 'undefined' ? this.getDataValue('surname') : '';
+      let name = typeof this.getDataValue('name') != 'undefined' ? this.getDataValue('name')[0] + '.' : '';
+      let secondName = typeof this.getDataValue('secondName') != 'undefined' ? this.getDataValue('secondName')[0] + '.' : '';
+      if (surname || name || secondName) {
+        return surname + ' ' + name + secondName;
+      }
+      return null;
+    }
+  },
+  full_name: {
+    type: Sequelize.VIRTUAL(Sequelize.TEXT, ['name', 'surname', 'secondName']),
+    get() {
+      let surname = typeof this.getDataValue('surname') != 'undefined' ? this.getDataValue('surname') : '';
+      let name = typeof this.getDataValue('name') != 'undefined' ? this.getDataValue('name') : '';
+      let secondName = typeof this.getDataValue('secondName') != 'undefined' ? this.getDataValue('secondName') : '';
+      if (surname || name || secondName) {
+        return surname + ' ' + name + ' ' + secondName;
+      }
+      return null;
+    }
+  },
   login: {
     type: Sequelize.STRING(40),
     allowNull: false,
