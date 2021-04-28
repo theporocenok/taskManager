@@ -73,12 +73,17 @@ export async function logout(req, res, next) {
   next();
 }
 
+export async function me(req, res, next) {
+  res.status(200).json(res.locals.user);
+  next();
+}
+
 export async function getSubordinatesList(req, res, next) {
-  let subordinatesList = await res.locals.user.getSubordinates(['id', 'name']);
+  let subordinatesList = await res.locals.user.getSubordinates(['id', 'fio', 'full_name']);
   res.status(200).json({
     subordinates: subordinatesList
   });
   next();
 }
 
-export default {login, register, getSubordinatesList, logout};
+export default {login, register, getSubordinatesList, logout, me};
