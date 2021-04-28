@@ -9,7 +9,7 @@ let errHandler = (e) => {
 export async function getAll(req, res, next) {
   let user = res.locals.user;
   res.status(200).json({
-    message: await user.getSubordinatesTasks(req.body.filters),
+    data: await user.getSubordinatesTasks(req.body.filters),
   });
   next();
 }

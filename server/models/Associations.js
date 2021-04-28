@@ -19,11 +19,11 @@ User.prototype.getFullTasks = function () {
     include: [
       {
         association: 'creator',
-        attributes: ['id', 'name', 'surname', 'secondName']
+        attributes: ['id', 'fio', 'full_name']
       },
       {
         association: 'responsible',
-        attributes: ['id', 'name', 'surname', 'secondName']
+        attributes: ['id', 'fio', 'full_name']
       },
     ]
   });
@@ -33,11 +33,11 @@ Task.findAll({
   include: [
     {
       association: 'creator',
-      attributes: ['id', 'name', 'surname', 'secondName']
+      attributes: ['id', 'fio', 'full_name']
     },
     {
       association: 'responsible',
-      attributes: ['id', 'name', 'surname', 'secondName']
+      attributes: ['id', 'fio', 'full_name']
     },
   ]
 });
@@ -45,11 +45,11 @@ Task.findOne({
   include: [
     {
       association: 'creator',
-      attributes: ['id', 'name', 'surname', 'secondName']
+      attributes: ['id', 'fio', 'full_name']
     },
     {
       association: 'responsible',
-      attributes: ['id', 'name', 'surname', 'secondName']
+      attributes: ['id', 'fio', 'full_name']
     },
   ]
 });

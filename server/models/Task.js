@@ -35,11 +35,11 @@ Task.getAllByUserIds = async function (ids = [], filters = {}) {
     include: [
       {
         association: 'creator',
-        attributes: ['id', 'name', 'surname', 'secondName']
+        attributes: ['id', 'fio', 'full_name']
       },
       {
         association: 'responsible',
-        attributes: ['id', 'name', 'surname', 'secondName']
+        attributes: ['id', 'fio', 'full_name']
       },
     ],
     where: {
