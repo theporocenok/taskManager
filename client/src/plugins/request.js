@@ -1,3 +1,5 @@
+import cookies from 'vue-cookies';
+
 export default {
   install(Vue) {
     Vue.prototype.$request = async (url, method = 'GET', body) => {
@@ -7,6 +9,7 @@ export default {
           method,
           headers: {
             'Content-Type': 'application/json;charset=utf-8',
+            'Authorization': cookies.get('jwt')
           },
           body
         })
