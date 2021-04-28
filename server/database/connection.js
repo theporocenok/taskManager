@@ -9,7 +9,8 @@ const sequelize = new Sequelize(process.env.DB_name, process.env.DB_username, pr
   define: {
     charset: 'utf8',
     collate: 'utf8_general_ci'
-  }
+  },
+  logging: false,
 });
 
 export default sequelize;
