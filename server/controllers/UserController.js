@@ -35,8 +35,7 @@ export async function login(req, res, next) {
     .cookie('jwt', token, { maxAge: 1000 * 60 * 60 * 24, httpOnly: true })
     .status(200)
     .json({
-      message: user,
-      token: token,
+      token
     });
 
   next();
@@ -61,8 +60,16 @@ export async function register(req, res, next) {
     .cookie('jwt', token, { maxAge: 1000 * 60 * 60 * 24, httpOnly: true })
     .status(200)
     .json({
-      message: user,
+      token,
     });
+  next();
+}
+
+export async function logout(req, res, next) {
+  res
+    .cookie('jwt', '', { maxAge: 0 })
+    .status(200)
+    .send();
   next();
 }
 
@@ -74,4 +81,4 @@ export async function getSubordinatesList(req, res, next) {
   next();
 }
 
-export default {login, register, getSubordinatesList};
+export default {login, register, getSubordinatesList, logout};
