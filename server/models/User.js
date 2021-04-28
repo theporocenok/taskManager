@@ -70,7 +70,7 @@ User.prototype.getSubordinates = async function(attrs = ['id'], params = {},) {
 }
 User.prototype.getAllTasks = async function() {
   return [].concat(
-    (await this.getTasks()).map(task => task.dataValues),
+    (await this.getFullTasks()).map(task => task.dataValues),
     (await this.getSubordinatesTasks()).map(task => task.dataValues)
   );
 

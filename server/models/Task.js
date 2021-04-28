@@ -32,6 +32,16 @@ Task.init( {
 
 Task.getAllByUserIds = async function (ids = [], filters = {}) {
   return await Task.findAll({
+    include: [
+      {
+        association: 'creator',
+        attributes: ['id', 'name', 'surname', 'secondName']
+      },
+      {
+        association: 'responsible',
+        attributes: ['id', 'name', 'surname', 'secondName']
+      },
+    ],
     where: {
       creatorId: ids,
       expirationDate: !!filters.dateFrom
