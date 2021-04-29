@@ -14,12 +14,12 @@ Vue.$cookies.config('1d');
 
 router.beforeEach((to, from, next) => {
   let hasToken = cookies.get('jwt');
-  if (to.name !== "auth" && !hasToken) {
-    next("/auth/login");
+  if (to.name !== "tasks" && hasToken) {
+    next("/tasks");
     return;
   }
-  if (to.name === "auth" && hasToken) {
-    next("/tasks");
+  if (to.name !== "auth" && !hasToken) {
+    next("/auth/login");
     return;
   }
   next();
