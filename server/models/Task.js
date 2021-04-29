@@ -43,17 +43,18 @@ Task.getAllByUserIds = async function (ids = [], filters = {}) {
       },
     ],
     where: {
-      creatorId: ids,
-      expirationDate: !!filters.dateFrom
-        ? {[Sequelize.Op.gt]: new Date(filters.dateFrom)}
+      responsibleId: !!filters.subordinate && filters.subordinate !== 'null'
+        ? filters.subordinate
+        : ids,
+      expirationDate: !!filters.dateFrom && filters.dateFrom !== 'null'
+        ? {[Sequelize.Op.gte]: new Date(filters.dateFrom)}
         : {[Sequelize.Op.ne]: 'undefined'},
       [Sequelize.Op.and]: {
-        expirationDate: !!filters.dateTo
+        expirationDate: !!filters.dateTo && filters.dateTo !== 'null'
           ? {[Sequelize.Op.lt]: new Date(filters.dateTo)}
           : {[Sequelize.Op.ne]: 'undefined'},
       }
     },
     order: [['updatedAt', 'DESC']],
-    group: !!filters.groupBy ? filters.groupBy : undefined,
   })
 }
