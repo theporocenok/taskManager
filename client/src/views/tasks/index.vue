@@ -65,6 +65,7 @@
           </v-icon>
         </v-btn>
         <v-btn
+          v-if="item.creatorId === currentUser.id"
           color="error"
           text
           min-width="0"
