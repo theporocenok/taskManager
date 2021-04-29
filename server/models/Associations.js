@@ -29,30 +29,5 @@ User.prototype.getFullTasks = function () {
   });
 }
 
-Task.findAll({
-  include: [
-    {
-      association: 'creator',
-      attributes: ['id', 'fio', 'full_name']
-    },
-    {
-      association: 'responsible',
-      attributes: ['id', 'fio', 'full_name']
-    },
-  ]
-});
-Task.findOne({
-  include: [
-    {
-      association: 'creator',
-      attributes: ['id', 'fio', 'full_name']
-    },
-    {
-      association: 'responsible',
-      attributes: ['id', 'fio', 'full_name']
-    },
-  ]
-});
-
 global.sequelize.sync();
 export default {User, Task};
