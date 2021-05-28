@@ -1,0 +1,36 @@
+@import "~bootstrap";
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.auth-form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.auth-form__inputs {
+    min-width: 255px;
+}
+
+.react-google-flight-datepicker .date-picker.task-date-picker {
+    padding: 0;
+}
+
+.react-google-flight-datepicker .task-date-picker .date-picker-input {
+    height: 48px;
+}
+
+.react-google-flight-datepicker .task-date-picker .change-date-group .change-date-button {
+    display: none;
+}
